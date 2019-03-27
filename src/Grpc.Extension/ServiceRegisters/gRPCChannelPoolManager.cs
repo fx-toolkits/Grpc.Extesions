@@ -130,8 +130,7 @@ namespace Grpc.Extension
                 _logger.Debug($"[{RemoteServiceOption.ServiceName}] starting DownLoadServiceList.");
 
                 //当前正在使用的servicelist
-                var currentUsageServiceChannels =
-                    ConnectedAgentServiceChannels.ConvertAll(p => p.AgentService);
+                var currentUsageServiceChannels = ConnectedAgentServiceChannels.ConvertAll(p => p.AgentService);
 
                 var newestService = new List<AgentService>();
                 var passOnlyService = await ConsulClient.Health.Service(this.RemoteServiceOption.ServiceName, "", true);
@@ -183,11 +182,22 @@ namespace Grpc.Extension
 
         internal void CheckPoolState()
         {
-            // download service list
             if (ConnectedAgentServiceChannels.Count == 0)
             {
-                DownLoadServiceListAsync().Wait(); //sync
+                if (RemoteServiceOption.ConsulIntegration)
+                {
+                    // download service list
+                    if (ConnectedAgentServiceChannels.Count == 0)
+                    {
+                        DownLoadServiceListAsync().Wait(); //sync
+                    }
+                }
+                else
+                {
+                    this.InitGrpcChannel();
+                }
             }
+
 
             if (ConnectedAgentServiceChannels.Count == 0)
             {
