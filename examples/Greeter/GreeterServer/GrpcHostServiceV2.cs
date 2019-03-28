@@ -14,9 +14,9 @@ namespace GreeterServer
 {
     public class GrpcHostServiceV2 : IHostedService
     {
+        private readonly IConfiguration _conf;
+        private readonly IEnumerable<ServerInterceptor> _serverInterceptors;
         private Server _server;
-        private IConfiguration _conf;
-        private IEnumerable<ServerInterceptor> _serverInterceptors;
 
         public GrpcHostServiceV2(IConfiguration conf, IEnumerable<ServerInterceptor> serverInterceptors)
         {
@@ -50,7 +50,7 @@ namespace GreeterServer
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _server?.StopAndDeRegisterService();//停止服务并从consul反注册
+            _server?.StopAndDeRegisterService(); //停止服务并从consul反注册
             return Task.CompletedTask;
         }
     }
