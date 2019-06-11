@@ -67,8 +67,8 @@ namespace Grpc.Extension
             if (ipAndPort != null)
             {
                 MetaModel.StartTime = DateTime.Now;
-                MetaModel.Ip = ipAndPort.Host;
-                MetaModel.Port = ipAndPort.BoundPort;
+                MetaModel.Ip = LocalServiceOption.Instance.IP;
+                MetaModel.Port = LocalServiceOption.Instance.Port;
 
                 GrpcEnvironment.Logger.ForType<Server>().Info($"server listening {MetaModel.Ip}:{MetaModel.Port}");
 

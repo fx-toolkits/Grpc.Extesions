@@ -52,8 +52,8 @@ namespace Grpc.Extension.Registers
                     Name = LocalServiceOption.Instance.ServiceName,
                     Tags = LocalServiceOption.Instance.ConsulTags?.Split(','),
                     EnableTagOverride = true,
-                    Address = MetaModel.Ip,
-                    Port = MetaModel.Port,
+                    Address = LocalServiceOption.Instance.IP,
+                    Port = LocalServiceOption.Instance.Port,
                     Check = new AgentCheckRegistration
                     {
                         ID = GetTTLCheckId(),

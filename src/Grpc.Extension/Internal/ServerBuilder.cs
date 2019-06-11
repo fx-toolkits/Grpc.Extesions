@@ -115,8 +115,7 @@ namespace Grpc.Extension.Internal
             }
 
             //添加服务IPAndPort
-            var ipPort = NetHelper.GetIPAndPort(LocalServiceOption.Instance.ServiceAddress);
-            server.Ports.Add(new ServerPort(ipPort.Item1, ipPort.Item2, ServerCredentials.Insecure));
+            server.Ports.Add(new ServerPort("0.0.0.0", LocalServiceOption.Instance.Port, ServerCredentials.Insecure));
 
             return server;
         }
