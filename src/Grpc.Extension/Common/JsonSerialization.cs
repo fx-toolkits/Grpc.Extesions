@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Grpc.Extension.Common
 {
     internal static class JsonSerialization
     {
-        static JsonSerializerSettings settings = new JsonSerializerSettings()
+        private static JsonSerializerSettings settings = new JsonSerializerSettings()
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects
@@ -56,6 +54,7 @@ namespace Grpc.Extension.Common
                 return default(T);
             }
         }
+
         /// <summary>
         /// 从序列化字符串里反序列化
         /// </summary>
@@ -83,6 +82,7 @@ namespace Grpc.Extension.Common
 
             return JsonConvert.DeserializeObject<T>(input, settings);
         }
+
         /// <summary>
         /// 从序列化字符串里反序列化
         /// </summary>

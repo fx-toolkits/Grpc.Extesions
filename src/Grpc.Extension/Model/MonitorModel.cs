@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 
 
@@ -25,11 +24,11 @@ namespace Grpc.Extension.Model
         public string RequestUrl { get; set; }
 
         public string RequestData { get; set; }
+
         /// <summary>
         /// 多层调用的追踪id
         /// </summary>
         public string TraceId { get; set; }
-
 
         /// <summary>
         /// ok | error

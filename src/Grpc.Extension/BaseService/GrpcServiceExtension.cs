@@ -31,6 +31,7 @@ namespace Grpc.Extension.BaseService
             {
                 serviceName = $"{pkg}.{serviceName}";
             }
+
             var request = Marshallers.Create<TRequest>((arg) => ProtobufExtensions.Serialize<TRequest>(arg), data => ProtobufExtensions.Deserialize<TRequest>(data));
             var response = Marshallers.Create<TResponse>((arg) => ProtobufExtensions.Serialize<TResponse>(arg), data => ProtobufExtensions.Deserialize<TResponse>(data));
             return new Method<TRequest, TResponse>(mType, serviceName, methodName, request, response);

@@ -25,24 +25,26 @@ namespace Grpc.Extension
             var bindFlags = BindingFlags.Static | BindingFlags.NonPublic;
             config.GrpcSrvName = typeof(T).DeclaringType.GetFieldValue<string>("__ServiceName", bindFlags);
 
-            GRPCChannelPoolManager.Instances.Value.Add(new GRPCChannelPoolManager(config));
+            GrpcChannelPoolManager.Instances.Value.Add(new GrpcChannelPoolManager(config));
             return services;
         }
 
         public static IServiceCollection AddGrpcMiddleware4Srv(this IServiceCollection services)
         {
-            //添加服务端中间件
+            // 添加服务端中间件
             services.AddSingleton<ServiceRegister>();
             services.AddSingleton<ServerInterceptor, MonitorInterceptor>();
             services.AddSingleton<ServerInterceptor, ThrottleInterceptor>();
+
             return services;
         }
 
         public static IServiceCollection AddGrpcMiddleware4Client(this IServiceCollection services)
         {
-            //添加客户端中间件的CallInvoker
+            // 添加客户端中间件的CallInvoker
             services.AddSingleton<AutoChannelCallInvoker>();
             services.AddSingleton<CallInvoker, ClientMiddlewareCallInvoker>();
+
             return services;
         }
 

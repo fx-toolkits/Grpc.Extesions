@@ -14,9 +14,9 @@ namespace Grpc.Extension
     /// grpc ChannelPool Manager
     /// </summary>
     /// <seealso cref="FM.ConsulInterop.ConsulInterop" />
-    public class GRPCChannelPoolManager : ConsulInterop
+    internal class GrpcChannelPoolManager : ConsulInterop
     {
-        ILogger _logger => GrpcEnvironment.Logger.ForType<GRPCChannelPoolManager>();
+        ILogger _logger => GrpcEnvironment.Logger.ForType<GrpcChannelPoolManager>();
 
         /// <summary>
         /// timer for fresh service  
@@ -37,12 +37,12 @@ namespace Grpc.Extension
 
         internal RemoteServiceOption RemoteServiceOption { get; private set; }
 
-        private GRPCChannelPoolManager()
+        private GrpcChannelPoolManager()
         {
 
         }
 
-        public GRPCChannelPoolManager(RemoteServiceOption config)
+        public GrpcChannelPoolManager(RemoteServiceOption config)
         {
             RemoteServiceOption = config;
             InitGrpcChannel();
@@ -258,7 +258,7 @@ namespace Grpc.Extension
         /// <exception cref="Exception"></exception>
         public AgentServiceChannelPair FetchOneAgentServiceChannelPair => LoadBalancer.SelectEndpoint(this.GrpcSrvName);
 
-        public static Lazy<List<GRPCChannelPoolManager>> Instances = new Lazy<List<GRPCChannelPoolManager>>(() => new List<GRPCChannelPoolManager>(), true);
+        public static Lazy<List<GrpcChannelPoolManager>> Instances = new Lazy<List<GrpcChannelPoolManager>>(() => new List<GrpcChannelPoolManager>(), true);
     }
 
     public class AgentServiceChannelPair

@@ -1,8 +1,6 @@
 ﻿using Grpc.Core;
 using Grpc.Extension.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Grpc.Extension.Common;
 
 namespace Grpc.Extension.Internal

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using ProtoBuf;
 
 namespace Grpc.Extension.Common
@@ -20,7 +17,9 @@ namespace Grpc.Extension.Common
         public static T Deserialize<T>(byte[] data)
         {
             using (MemoryStream memoryStream = new MemoryStream(data))
+            {
                 return Serializer.Deserialize<T>((Stream)memoryStream);
+            }
         }
     }
 }

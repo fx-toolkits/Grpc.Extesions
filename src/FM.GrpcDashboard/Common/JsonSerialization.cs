@@ -53,6 +53,7 @@ namespace System
                 return default(T);
             }
         }
+
         /// <summary>
         /// 从序列化字符串里反序列化
         /// </summary>

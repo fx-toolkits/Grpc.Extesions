@@ -2,7 +2,7 @@
 
 namespace Grpc.Extension.Common
 {
-    public static class DateTimeExtensions
+    internal static class DateTimeExtensions
     {
         public static DateTime FromUnixTimestamp(this long unixtime)
         {

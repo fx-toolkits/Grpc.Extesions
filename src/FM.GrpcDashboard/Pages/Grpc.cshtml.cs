@@ -3,11 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FM.GrpcDashboard.Pages
 {
     public class GrpcModel : PageModel
     {
+        private readonly ConsulService _consulSrv;
+        private readonly GrpcService _grpcSrv;
+
+        public GrpcModel(ConsulService consulSrv, GrpcService grpcSrv)
+        {
+            _consulSrv = consulSrv;
+            _grpcSrv = grpcSrv;
+        }
+
         public string ServiceName { get; set; }
 
         public List<string> AddressInfos { get; set; }
@@ -16,16 +26,7 @@ namespace FM.GrpcDashboard.Pages
 
         public InfoRS Info { get; set; }
 
-        ConsulService _consulSrv;
-        GrpcService _grpcSrv;
-
-        public GrpcModel(ConsulService consulSrv, GrpcService grpcSrv)
-        {
-            _consulSrv = consulSrv;
-            _grpcSrv = grpcSrv;
-        }
-
-        public IActionResult OnGet(string serviceName, string serverAddress = null)
+        public async Task<IActionResult> OnGet(string serviceName, string serverAddress = null)
         {
             ServiceName = serviceName?.Trim();
             CurrentAddressInfo = serverAddress?.Trim();
@@ -42,11 +43,11 @@ namespace FM.GrpcDashboard.Pages
                 var ip = arr[0];
                 var port = int.Parse(arr[1]);
 
-                Info = _grpcSrv.GetInfo(ip, port).Result;
+                Info = await _grpcSrv.GetInfo(ip, port);
             }
             else
             {
-                var service = _consulSrv.GetService(ServiceName).Result;
+                var service = await _consulSrv.GetService(ServiceName);
                 if (service == null || service.Count == 0)
                 {
                     return RedirectToPage("Error", new { msg = $"consul中找不到服务{ServiceName}" });
@@ -56,7 +57,7 @@ namespace FM.GrpcDashboard.Pages
                 var port = service.First().Port;
                 CurrentAddressInfo = $"{ip}:{port}";
 
-                Info = _grpcSrv.GetInfo(ip, port).Result;
+                Info = await _grpcSrv.GetInfo(ip, port);
             }
 
             if (Info == null)
@@ -65,20 +66,22 @@ namespace FM.GrpcDashboard.Pages
             }
             return Page();
         }
+
         /// <summary>
         /// 截流
         /// </summary>
-        public IActionResult OnPostThrottle(string serviceName, string methodName, bool isThrottled)
+        public async Task<IActionResult> OnPostThrottle(string serviceName, string methodName, bool isThrottled)
         {
-            var res = _grpcSrv.Throttle(serviceName, methodName, isThrottled);
+            var res = await _grpcSrv.Throttle(serviceName, methodName, isThrottled);
             return new JsonResult(new { result = res.Item1, msg = res.Item2 });
         }
+
         /// <summary>
         /// 保持响应
         /// </summary>
-        public IActionResult OnPostSaveResponse(string serviceName, string methodName, bool saveResponseEnable)
+        public async Task<IActionResult> OnPostSaveResponse(string serviceName, string methodName, bool saveResponseEnable)
         {
-            var res = _grpcSrv.SaveResponse(serviceName, methodName, saveResponseEnable);
+            var res = await _grpcSrv.SaveResponse(serviceName, methodName, saveResponseEnable);
             return new JsonResult(new { result = res.Item1, msg = res.Item2 });
         }
     }

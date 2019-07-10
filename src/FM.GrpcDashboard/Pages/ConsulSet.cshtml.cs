@@ -7,8 +7,9 @@ namespace FM.GrpcDashboard.Pages
 {
     public class ConsulSetModel : PageModel
     {
-        ConsulService _consulSrv;
-        IConfiguration _config;
+        private readonly ConsulService _consulSrv;
+        private readonly IConfiguration _config;
+
         public ConsulSetModel(ConsulService consulSrv, IConfiguration config)
         {
             _consulSrv = consulSrv;
@@ -26,7 +27,6 @@ namespace FM.GrpcDashboard.Pages
             var nodes = _consulSrv.GetAllNode().Result;
             var selectList = nodes.Select(p => new SelectListItem() { Value = "http://" + p.Address + ":8500/", Text = p.Name }).ToList();
             return new SelectList(selectList, "Value", "Text", selected);
-
         }
 
         public void OnPost(string addr=null)

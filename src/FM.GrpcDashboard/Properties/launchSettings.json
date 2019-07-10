@@ -3,30 +3,25 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:56845/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:28810",
+      "sslPort": 44384
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "commandLineArgs": "environment=Development urls=http://*:8001",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://*:8001",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "FM.GrpcDashboard": {
       "commandName": "Project",
-      "commandLineArgs": "environment=Development urls=http://*:8001",
       "launchBrowser": true,
-      "launchUrl": "/",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://*:8001",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:56846/"
+      }
     }
   }
 }

@@ -31,18 +31,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-page="/Index">Consul</a></li>
-                    <li><a asp-page="/Grpc">Grpc</a></li>
-                    <li><a asp-page="/Invoke">Invoke</a></li>
                     <li><a asp-page="/Unregister">Unregister</a></li>
                     <li><a asp-page="/ConsulSet">Set ConsulAddress</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@(ViewContext.HttpContext.User.Identity.Name) <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="@Url.Content("~/signout")">注 销</a></li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -51,7 +41,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - FM.GrpcDashboard</p>
+            <p>&copy; 2019 - FM.GrpcDashboard</p>
         </footer>
     </div>
 

@@ -23,7 +23,7 @@ namespace Grpc.Extension.LoadBalancer
         public AgentServiceChannelPair SelectEndpoint(string serviceName)
         {
             var entryed = false;
-            var pool = GRPCChannelPoolManager.Instances.Value.First(p => p.GrpcSrvName == serviceName);
+            var pool = GrpcChannelPoolManager.Instances.Value.First(p => p.GrpcSrvName == serviceName);
             try
             {
                 /*

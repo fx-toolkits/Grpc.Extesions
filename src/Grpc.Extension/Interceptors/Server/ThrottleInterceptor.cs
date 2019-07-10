@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ServiceModel.Channels;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
-using Grpc.Core.Interceptors;
 using Grpc.Extension.Internal;
 
 namespace Grpc.Extension.Interceptors
@@ -23,6 +18,7 @@ namespace Grpc.Extension.Interceptors
                     StatusCode.Cancelled,
                     Newtonsoft.Json.JsonConvert.SerializeObject(new { Code = 503, Detail = Consts.ThrottledMsg })));
             }
+
             return await continuation(request, context);
         }
     }

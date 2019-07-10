@@ -7,7 +7,7 @@ namespace Grpc.Extension
     /// <summary>
     /// ref: https://github.com/FollowmeTech/fm.consulinterop/blob/master/src/FM.ConsulInterop/NetHelper.cs
     /// </summary>
-    public static class NetHelper
+    internal static class NetHelper
     {
         /// <summary>
         /// The ip segment regex
