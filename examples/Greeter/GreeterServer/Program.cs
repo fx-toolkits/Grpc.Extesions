@@ -1,5 +1,5 @@
-using System;
 using System.IO;
+using System.Threading.Tasks;
 using Grpc.Extension;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,36 +7,37 @@ using Microsoft.Extensions.Hosting;
 
 namespace GreeterServer
 {
-    class Program
+    internal class Program
     {
-        public static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            using (var host = BuildHost(args))
-            {
-                host.Run();
-            }
+            var host = CreateHostBuilder(args).Build();
+            await host.StartAsync();
         }
 
-        public static IHost BuildHost(string[] args)
-        {
-            var configPath = Path.Combine(AppContext.BaseDirectory, "config");
-            var host = new HostBuilder()
-                .ConfigureHostConfiguration(conf =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            new HostBuilder()
+                .ConfigureHostConfiguration(configHost =>
                 {
-                    conf.SetBasePath(configPath);
-                    conf.AddJsonFile("hostsettings.json", optional: true);
+                    configHost.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Configs"));
+                    configHost.AddJsonFile("hostsettings.json", optional: true);
+                    configHost.AddCommandLine(args);
                 })
-                .ConfigureAppConfiguration((ctx, conf) =>
+                .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
-                    conf.SetBasePath(configPath);
-                    conf.AddJsonFile("appsettings.json", false, true);
+                    hostContext.HostingEnvironment.ApplicationName = "GreeterServer";
+
+                    configApp.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Configs"));
+                    configApp.AddJsonFile("appsettings.json", optional: false);
+                    configApp.AddJsonFile(
+                        $"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json",
+                        optional: true);
                 })
-                .ConfigureServices((ctx, services) =>
+                .ConfigureServices(services =>
                 {
                     services.AddGrpcMiddleware4Srv().BuildInterl4Grpc();
-                    services.AddHostedService<GrpcHostServiceV2>();
-                });
-            return host.Build();
-        }
+                    services.AddHostedService<GrpcHostService>();
+                })
+                .UseConsoleLifetime();
     }
 }

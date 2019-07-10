@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Grpc.Core;
 using Helloworld;
 
-namespace GreeterServer
+namespace GreeterServer.Impls
 {
     public class GreeterImpl : Greeter.GreeterBase
     {
