@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Extension.Model;
@@ -50,6 +49,7 @@ namespace Grpc.Extension.BaseService
                 };
             });
         }
+
         /// <summary>
         /// 服务方法的详细信息
         /// </summary>
@@ -69,6 +69,7 @@ namespace Grpc.Extension.BaseService
                 };
             });
         }
+
         /// <summary>
         /// 服务方法调用
         /// </summary>

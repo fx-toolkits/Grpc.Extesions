@@ -168,7 +168,7 @@ namespace FM.GrpcDashboard
             }
             finally
             {
-                channel.ShutdownAsync().Wait();
+                await channel.ShutdownAsync();
             }
         }
     }

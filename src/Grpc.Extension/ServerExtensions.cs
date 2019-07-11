@@ -37,23 +37,20 @@ namespace Grpc.Extension
         /// <returns></returns>
         public static Server UseDashBoard(this Server server)
         {
-            foreach (var serverServiceDefinition in server.Services)
-            {
-                var bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                /*
-                 * callHandlers:
-                 * 
-                 * 定义在server.ServiceDefinition中
-                 * private readonly Dictionary<string, IServerCallHandler> callHandlers = new Dictionary<string, IServerCallHandler>();
-                 */
-                var callHandlers = serverServiceDefinition.GetPropertyValue<IDictionary>("CallHandlers", bindingFlags);
-                GrpcServiceExtension.BuildMeta(callHandlers);
-            }
+            var bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            /*
+             * callHandlers:
+             * 
+             * 定义在server中
+             * private readonly Dictionary<string, IServerCallHandler> callHandlers = new Dictionary<string, IServerCallHandler>();
+             */
+            // serverServiceDefinition.GetCallHandlers();
+            var callHandlers = server.GetFieldValue<IDictionary>("callHandlers", bindingFlags);
+            GrpcServiceExtension.BuildMeta(callHandlers.Item1);
             //注册基础服务
             server.UseGrpcService(new List<IGrpcService> { new CmdService(), new MetaService() });
             return server;
         }
-
 
         /// <summary>
         /// 启动并注册服务
@@ -72,7 +69,7 @@ namespace Grpc.Extension
 
                 GrpcEnvironment.Logger.ForType<Server>().Info($"server listening {MetaModel.Ip}:{MetaModel.Port}");
 
-                //注册到Consul
+                // 注册到Consul
                 var consulManager = ServiceProvider.GetService<ServiceRegister>();
                 consulManager.RegisterService();
             }
@@ -86,7 +83,7 @@ namespace Grpc.Extension
         /// <returns></returns>
         public static Server StopAndDeRegisterService(this Server server)
         {
-            //从Consul反注册
+            // 从Consul反注册
             var consulManager = ServiceProvider.GetService<ServiceRegister>();
             consulManager.DeregisterService();
             server.ShutdownAsync().Wait();
