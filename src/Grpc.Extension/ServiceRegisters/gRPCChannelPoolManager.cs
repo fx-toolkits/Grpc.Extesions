@@ -231,7 +231,15 @@ namespace Grpc.Extension
 
         private void AddGrpcChannel(string address, int port, AgentService agentService)
         {
-            var newChannle = new Channel(address, port, ChannelCredentials.Insecure, new List<ChannelOption>());
+            var chanelOptions = new List<ChannelOption>
+            {
+                new ChannelOption("grpc.keepalive_time_ms", 1000 * 60 * 3),
+                new ChannelOption("grpc.keepalive_timeout_ms", 1000 * 10),
+                new ChannelOption("grpc.http2.min_time_between_pings_ms", 1000 * 10),
+                new ChannelOption("grpc.http2.max_pings_without_data", 0),
+                new ChannelOption("grpc.keepalive_permit_without_calls", 1)
+            };
+            var newChannle = new Channel(address, port, ChannelCredentials.Insecure, chanelOptions);
 
             var newPair = new AgentServiceChannelPair
             {
