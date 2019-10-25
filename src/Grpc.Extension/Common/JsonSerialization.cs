@@ -19,20 +19,22 @@ namespace Grpc.Extension.Common
         /// <returns></returns>
         public static string ToJson(this object input, string dateTimeFormat = "yyyy-MM-dd HH:mm:ss", bool ignoreNullValue = true, bool isIndented = false)
         {
-            settings.NullValueHandling = ignoreNullValue ? Newtonsoft.Json.NullValueHandling.Ignore : NullValueHandling.Include;
+            settings.NullValueHandling = ignoreNullValue ? NullValueHandling.Ignore : NullValueHandling.Include;
 
             if (!string.IsNullOrWhiteSpace(dateTimeFormat))
             {
                 var jsonConverter = new List<JsonConverter>()
                 {
-                    new Newtonsoft.Json.Converters.IsoDateTimeConverter(){ DateTimeFormat = dateTimeFormat }//如： "yyyy-MM-dd HH:mm:ss"
+                    // 如： "yyyy-MM-dd HH:mm:ss"
+                    new Newtonsoft.Json.Converters.IsoDateTimeConverter() { DateTimeFormat = dateTimeFormat } 
                 };
+
                 settings.Converters = jsonConverter;
             }
 
-            //no format
-            var format = isIndented ? Newtonsoft.Json.Formatting.Indented : Formatting.None;
+            var format = isIndented ? Formatting.Indented : Formatting.None;
             var json = JsonConvert.SerializeObject(input, format, settings);
+
             return json;
         }
 
@@ -69,13 +71,14 @@ namespace Grpc.Extension.Common
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             };
-            settings.NullValueHandling = ignoreNullValue ? Newtonsoft.Json.NullValueHandling.Ignore : NullValueHandling.Include;
+            settings.NullValueHandling = ignoreNullValue ? NullValueHandling.Ignore : NullValueHandling.Include;
 
             if (!string.IsNullOrWhiteSpace(dateTimeFormat))
             {
                 var jsonConverter = new List<JsonConverter>()
                 {
-                    new Newtonsoft.Json.Converters.IsoDateTimeConverter(){ DateTimeFormat = dateTimeFormat }//如： "yyyy-MM-dd HH:mm:ss"
+                    // 如： "yyyy-MM-dd HH:mm:ss"
+                    new Newtonsoft.Json.Converters.IsoDateTimeConverter(){ DateTimeFormat = dateTimeFormat }
                 };
                 settings.Converters = jsonConverter;
             }
@@ -99,14 +102,15 @@ namespace Grpc.Extension.Common
             };
             if (ignoreNullValue)
             {
-                settings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                settings.NullValueHandling = NullValueHandling.Ignore;
             }
 
             if (!string.IsNullOrWhiteSpace(dateTimeFormat))
             {
                 var jsonConverter = new List<JsonConverter>()
                 {
-                    new Newtonsoft.Json.Converters.IsoDateTimeConverter(){ DateTimeFormat = dateTimeFormat }//如： "yyyy-MM-dd HH:mm:ss"
+                    // 如： "yyyy-MM-dd HH:mm:ss"
+                    new Newtonsoft.Json.Converters.IsoDateTimeConverter(){ DateTimeFormat = dateTimeFormat }
                 };
                 settings.Converters = jsonConverter;
             }
